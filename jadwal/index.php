@@ -24,6 +24,62 @@ if(isset($_GET['tanggal'])){
 
 ?>
 
+<style>
+@media print {
+    form,
+    .btn,
+    .d-flex,
+    .input-group,
+    .navbar,
+    .navbar-brand,      /* sembunyikan logo/tulisan brand */
+    header h1,          /* kalau ada judul besar di header */
+    header h2 {
+        display: none !important;
+    }
+
+    /* Atur layout khusus cetak */
+    body {
+        font-family: "Times New Roman", serif;
+        font-size: 14px;
+        margin: 20px;
+    }
+
+    /* Judul */
+    .print-title {
+        text-align: center;
+        font-size: 18pt;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    .print-subtitle {
+        text-align: center;
+        font-size: 14pt;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    table {
+        width: 100% !important;
+        border-collapse: collapse;
+        font-size: 12pt;
+    }
+
+    table th, table td {
+        border: 1px solid black;
+        padding: 6px;
+    }
+
+    /* Note bawah tabel */
+    .print-note {
+        margin-top: 15px;
+        font-size: 10pt;
+        font-style: italic;
+    }
+}
+</style>
+
+
 <div class="container mt-4">
     <div class="d-flex justify-content-between mb-3">
         <h4>Jadwal Kegiatan - <?= $filterLabel ?></h4>
@@ -34,11 +90,23 @@ if(isset($_GET['tanggal'])){
 
     <form method="get" class="mb-3">
         <div class="input-group">
-            <input type="date" name="tanggal" class="form-control" value="<?= ($tanggal=='all'?'':$tanggal) ?>">
-            <button class="btn btn-primary" type="submit">Pilih Tanggal</button>
-            <a href="?tanggal=all" class="btn btn-secondary">Semua Jadwal</a>
+            <!-- input tanggal langsung auto-submit saat berubah -->
+            <input type="date" name="tanggal" class="form-control" 
+               value="<?= ($tanggal=='all'?'':$tanggal) ?>" 
+               onchange="this.form.submit()">
+
+            <!-- tombol cetak untuk jadwal hari ini / tanggal terpilih -->
+            <button type="button" class="btn btn-secondary" onclick="window.print()">Cetak</button>
         </div>
     </form>
+
+    <div class="print-title d-none d-print-block">
+        JADWAL KEGIATAN DPPPA KOTA SEMARANG
+    </div>
+
+    <div class="print-subtitle d-none d-print-block">
+        <?= $filterLabel ?>
+    </div>
 
     <table class="table table-bordered table-striped">
         <thead>
@@ -78,6 +146,11 @@ if(isset($_GET['tanggal'])){
             <?php endif; ?>
         </tbody>
     </table>
+
+    <div class="print-note d-none d-print-block">
+        Note: Jika ada kegiatan yang belum terinput, mohon konfirmasi, terima kasih atas perhatiannya
+    </div>
+
 </div>
 
 <?php include '../templates/footer.php'; ?>
