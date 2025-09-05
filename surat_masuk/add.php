@@ -15,6 +15,9 @@ if (isset($_POST['submit'])) {
     $tanggal_masuk = $_POST['tanggal_masuk'];
     $pengirim = mysqli_real_escape_string($koneksi, $_POST['pengirim']);
     $perihal = mysqli_real_escape_string($koneksi, $_POST['perihal']);
+    $indeks_berkas = mysqli_real_escape_string($koneksi, $_POST['indeks_berkas']);
+    $kode = mysqli_real_escape_string($koneksi, $_POST['kode']);
+    $no_agenda = mysqli_real_escape_string($koneksi, $_POST['no_agenda']);
 
     // Upload file lampiran
     $file_name = $_FILES['file_lampiran']['name'];
@@ -23,7 +26,9 @@ if (isset($_POST['submit'])) {
     $target_file = $target_dir . basename($file_name);
 
     if (move_uploaded_file($file_tmp, $target_file)) {
-        $insert = mysqli_query($koneksi, "INSERT INTO surat_masuk (nomor_surat, tanggal_masuk, pengirim, perihal, file_lampiran) VALUES ('$nomor_surat', '$tanggal_masuk', '$pengirim', '$perihal', '$file_name')");
+        $insert = mysqli_query($koneksi, "INSERT INTO surat_masuk 
+            (nomor_surat, tanggal_masuk, pengirim, perihal, file_lampiran, indeks_berkas, kode, no_agenda) 
+            VALUES ('$nomor_surat', '$tanggal_masuk', '$pengirim', '$perihal', '$file_name', '$indeks_berkas', '$kode', '$no_agenda')");
         if ($insert) {
             echo "<div class='alert alert-success'>Surat masuk berhasil ditambahkan.</div>";
         } else {
@@ -41,6 +46,18 @@ if (isset($_POST['submit'])) {
   </div>
   <div class="card-body">
     <form method="post" enctype="multipart/form-data">
+      <div class="mb-3">
+        <label class="form-label">Indeks Berkas</label>
+        <input type="text" class="form-control" name="indeks_berkas" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Kode</label>
+        <input type="text" class="form-control" name="kode" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">No. Agenda</label>
+        <input type="text" class="form-control" name="no_agenda" required>
+      </div>
       <div class="mb-3">
         <label class="form-label">Nomor Surat</label>
         <input type="text" class="form-control" name="nomor_surat" required>

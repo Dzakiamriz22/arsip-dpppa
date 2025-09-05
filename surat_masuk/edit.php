@@ -18,6 +18,9 @@ if (isset($_POST['submit'])) {
     $tanggal_masuk = $_POST['tanggal_masuk'];
     $pengirim = mysqli_real_escape_string($koneksi, $_POST['pengirim']);
     $perihal = mysqli_real_escape_string($koneksi, $_POST['perihal']);
+    $indeks_berkas = mysqli_real_escape_string($koneksi, $_POST['indeks_berkas']);
+    $kode = mysqli_real_escape_string($koneksi, $_POST['kode']);
+    $no_agenda = mysqli_real_escape_string($koneksi, $_POST['no_agenda']);
 
     // Upload file baru jika ada
     if (!empty($_FILES['file_lampiran']['name'])) {
@@ -30,7 +33,16 @@ if (isset($_POST['submit'])) {
         $file_name = $row['file_lampiran']; // tetap pakai file lama
     }
 
-    $update = mysqli_query($koneksi, "UPDATE surat_masuk SET nomor_surat='$nomor_surat', tanggal_masuk='$tanggal_masuk', pengirim='$pengirim', perihal='$perihal', file_lampiran='$file_name' WHERE id_surat_masuk='$id'");
+    $update = mysqli_query($koneksi, "UPDATE surat_masuk SET 
+        nomor_surat='$nomor_surat', 
+        tanggal_masuk='$tanggal_masuk', 
+        pengirim='$pengirim', 
+        perihal='$perihal', 
+        file_lampiran='$file_name',
+        indeks_berkas='$indeks_berkas',
+        kode='$kode',
+        no_agenda='$no_agenda'
+        WHERE id_surat_masuk='$id'");
 
     if ($update) {
         echo "<div class='alert alert-success'>Surat berhasil diperbarui.</div>";
@@ -45,6 +57,18 @@ if (isset($_POST['submit'])) {
   <div class="card-header"><h4>Edit Surat Masuk</h4></div>
   <div class="card-body">
     <form method="post" enctype="multipart/form-data">
+      <div class="mb-3">
+        <label class="form-label">Indeks Berkas</label>
+        <input type="text" class="form-control" name="indeks_berkas" value="<?= $row['indeks_berkas'] ?>" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Kode</label>
+        <input type="text" class="form-control" name="kode" value="<?= $row['kode'] ?>" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">No. Agenda</label>
+        <input type="text" class="form-control" name="no_agenda" value="<?= $row['no_agenda'] ?>" required>
+      </div>
       <div class="mb-3">
         <label class="form-label">Nomor Surat</label>
         <input type="text" class="form-control" name="nomor_surat" value="<?= $row['nomor_surat'] ?>" required>
