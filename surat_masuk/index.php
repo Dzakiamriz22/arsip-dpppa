@@ -78,6 +78,7 @@ function formatTanggal($tanggal){
           <a href="delete.php?id=<?= $row['id_surat_masuk']; ?>" class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus?')">Hapus</a>
           <a href="detail.php?id=<?= $row['id_surat_masuk']; ?>" class="btn btn-sm btn-info">Detail</a>
           <a href="disposisi.php?id=<?= $row['id_surat_masuk']; ?>" class="btn btn-sm btn-primary">Disposisi</a>
+          <a href="print.php?id_surat=<?= $row['id_surat_masuk']; ?>" target="_blank" class="btn btn-sm btn-secondary">Cetak</a>
         </td>
         <?php elseif($_SESSION['role'] != 'admin'): ?>
         <td>
