@@ -26,6 +26,11 @@
             <i class="fas fa-calendar-alt"></i> Jadwal
           </a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/arsip-dpppa/arsip_digital/index.php">
+            <i class="fas fa-archive"></i> Arsip Digital
+          </a>
+        </li>
         <?php if ($_SESSION['role'] == 'admin'): ?>
         <li class="nav-item">
           <a class="nav-link" href="/arsip-dpppa/manajemen_user/index.php">
