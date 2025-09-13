@@ -29,65 +29,81 @@ function formatTanggal($tanggal){
 }
 ?>
 
-<div class="d-flex justify-content-between mb-3">
-  <h4>Daftar Surat Masuk</h4>
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h4 class="fw-bold text-primary">📩 Daftar Surat Masuk</h4>
   <?php if ($_SESSION['role'] == 'admin'): ?>
-    <a href="add.php" class="btn btn-success">Tambah Surat</a>
+    <a href="add.php" class="btn btn-success shadow-sm">
+      <i class="fas fa-plus me-1"></i> Tambah Surat
+    </a>
   <?php endif; ?>
 </div>
 
 <form class="mb-3" method="get">
-  <div class="input-group">
-    <input type="text" name="search" class="form-control" placeholder="Cari surat..." value="<?= htmlspecialchars($search) ?>">
-    <button class="btn btn-primary" type="submit">Cari</button>
+  <div class="input-group shadow-sm">
+    <input type="text" name="search" class="form-control" placeholder="Cari surat berdasarkan nomor, pengirim, atau perihal..." value="<?= htmlspecialchars($search) ?>">
+    <button class="btn btn-danger fw-bold" type="submit">
+      <i class="fas fa-search me-1"></i> Cari
+    </button>
   </div>
 </form>
 
-<table class="table table-bordered table-striped">
-  <thead>
-    <tr>
-      <th>No</th>
-      <th>Nomor Surat</th>
-      <th>Tanggal Masuk</th>
-      <th>Pengirim</th>
-      <th>Perihal</th>
-      <th>Lampiran</th>
-      <?php if ($_SESSION['role'] == 'admin'): ?>
+<div class="table-responsive">
+  <table class="table table-bordered table-striped align-middle shadow-sm">
+    <thead class="text-white" style="background-color:#C8102E;">
+      <tr class="text-center">
+        <th style="width:50px;">No</th>
+        <th>Nomor Surat</th>
+        <th>Tanggal Masuk</th>
+        <th>Pengirim</th>
+        <th>Perihal</th>
+        <th>Lampiran</th>
         <th>Aksi</th>
-      <?php endif; ?>
-    </tr>
-  </thead>
-  <tbody>
-    <?php $no=1; while($row = mysqli_fetch_assoc($result)): ?>
-      <tr>
-        <td><?= $no++; ?></td>
-        <td><?= $row['nomor_surat']; ?></td>
-        <td><?= formatTanggal($row['tanggal_masuk']); ?></td>
-        <td><?= $row['pengirim']; ?></td>
-        <td><?= $row['perihal']; ?></td>
-        <td>
-            <?php if($row['file_lampiran']): ?>
-                <a href="upload/<?= $row['file_lampiran'] ?>" target="_blank"><?= htmlspecialchars($row['file_lampiran']) ?></a>
-            <?php else: ?>
-                -
-            <?php endif; ?>
-        </td>
-        <?php if ($_SESSION['role'] == 'admin'): ?>
-        <td>
-          <a href="edit.php?id=<?= $row['id_surat_masuk']; ?>" class="btn btn-sm btn-warning">Edit</a>
-          <a href="delete.php?id=<?= $row['id_surat_masuk']; ?>" class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus?')">Hapus</a>
-          <a href="detail.php?id=<?= $row['id_surat_masuk']; ?>" class="btn btn-sm btn-info">Detail</a>
-          <a href="disposisi.php?id=<?= $row['id_surat_masuk']; ?>" class="btn btn-sm btn-primary">Disposisi</a>
-          <a href="print.php?id_surat=<?= $row['id_surat_masuk']; ?>" target="_blank" class="btn btn-sm btn-secondary">Cetak</a>
-        </td>
-        <?php elseif($_SESSION['role'] != 'admin'): ?>
-        <td>
-          <a href="detail.php?id=<?= $row['id_surat_masuk']; ?>" class="btn btn-sm btn-info">Detail</a>
-        </td>
-        <?php endif; ?>
       </tr>
-    <?php endwhile; ?>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <?php $no=1; while($row = mysqli_fetch_assoc($result)): ?>
+        <tr>
+          <td class="text-center"><?= $no++; ?></td>
+          <td><?= htmlspecialchars($row['nomor_surat']); ?></td>
+          <td><?= formatTanggal($row['tanggal_masuk']); ?></td>
+          <td><?= htmlspecialchars($row['pengirim']); ?></td>
+          <td><?= htmlspecialchars($row['perihal']); ?></td>
+          <td class="text-center">
+              <?php if($row['file_lampiran']): ?>
+                  <a href="upload/<?= $row['file_lampiran'] ?>" target="_blank" class="btn btn-sm btn-outline-primary">
+                    <i class="fas fa-file-alt"></i> Lihat
+                  </a>
+              <?php else: ?>
+                  <span class="text-muted">-</span>
+              <?php endif; ?>
+          </td>
+          <td class="text-center">
+            <?php if ($_SESSION['role'] == 'admin'): ?>
+              <a href="edit.php?id=<?= $row['id_surat_masuk']; ?>" class="btn btn-sm btn-warning">
+                <i class="fas fa-edit"></i>
+              </a>
+              <a href="delete.php?id=<?= $row['id_surat_masuk']; ?>" class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus?')">
+                <i class="fas fa-trash"></i>
+              </a>
+              <a href="detail.php?id=<?= $row['id_surat_masuk']; ?>" class="btn btn-sm btn-info text-white">
+                <i class="fas fa-info-circle"></i>
+              </a>
+              <a href="disposisi.php?id=<?= $row['id_surat_masuk']; ?>" class="btn btn-sm btn-primary">
+                <i class="fas fa-share-square"></i>
+              </a>
+              <a href="print.php?id_surat=<?= $row['id_surat_masuk']; ?>" target="_blank" class="btn btn-sm btn-secondary">
+                <i class="fas fa-print"></i>
+              </a>
+            <?php else: ?>
+              <a href="detail.php?id=<?= $row['id_surat_masuk']; ?>" class="btn btn-sm btn-info text-white">
+                <i class="fas fa-info-circle"></i> Detail
+              </a>
+            <?php endif; ?>
+          </td>
+        </tr>
+      <?php endwhile; ?>
+    </tbody>
+  </table>
+</div>
 
 <?php include '../templates/footer.php'; ?>

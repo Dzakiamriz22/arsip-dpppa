@@ -2,32 +2,27 @@
 include '../templates/header.php';
 include '../templates/navbar.php';
 include '../config/koneksi.php';
-?>
 
-<?php
 $units = ["Sekretariat", "PPA", "Permasdatin", "PPPUG", "UPTD PPA", "PHA"];
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Arsip Digital</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
-</head>
-<body>
-  <h1 class="mb-4">Arsip Digital</h1>
-  <div class="row">
-    <?php foreach($units as $unit): ?>
-      <div class="col-md-4 mb-3">
-        <div class="card shadow">
-          <div class="card-body text-center">
-            <h5><?= $unit ?></h5>
-            <a href="arsip.php?unit=<?= urlencode($unit) ?>" class="btn btn-primary mt-2">Lihat Arsip</a>
-          </div>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h4 class="fw-bold text-primary">📂 Arsip Digital</h4>
+</div>
+
+<div class="row">
+  <?php foreach($units as $unit): ?>
+    <div class="col-md-4 mb-3">
+      <div class="card shadow-sm border-0">
+        <div class="card-body text-center">
+          <h5 class="fw-bold"><?= htmlspecialchars($unit) ?></h5>
+          <a href="arsip.php?unit=<?= urlencode($unit) ?>" class="btn btn-primary shadow-sm mt-2">
+            <i class="fas fa-folder-open me-1"></i> Lihat Arsip
+          </a>
         </div>
       </div>
-    <?php endforeach; ?>
-  </div>
-</body>
-</html>
+    </div>
+  <?php endforeach; ?>
+</div>
 
 <?php include '../templates/footer.php'; ?>
