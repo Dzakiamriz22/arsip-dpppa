@@ -3,91 +3,103 @@ include 'templates/header.php';
 include 'templates/navbar.php';
 include 'config/koneksi.php';
 
-// Ambil info user
 $namaUser = $_SESSION['nama_lengkap'];
 $roleUser = $_SESSION['role'];
 
 // Ambil jumlah data
-$suratMasuk   = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT COUNT(*) as total FROM surat_masuk"))['total'];
-$suratKeluar  = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT COUNT(*) as total FROM surat_keluar"))['total'];
-$disposisi    = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT COUNT(*) as total FROM disposisi_surat"))['total'];
-$userCount    = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT COUNT(*) as total FROM users"))['total'];
+$data = [
+    'suratMasuk'   => mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT COUNT(*) as total FROM surat_masuk"))['total'],
+    'suratKeluar'  => mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT COUNT(*) as total FROM surat_keluar"))['total'],
+    'disposisi'    => mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT COUNT(*) as total FROM disposisi_surat"))['total'],
+    'userCount'    => mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT COUNT(*) as total FROM users"))['total'],
+    'arsipDigital' => mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT COUNT(*) as total FROM arsip_digital"))['total'],
+];
 
-// Jumlah surat & jadwal hari ini
 $today = date('Y-m-d');
-$suratHariIni  = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT COUNT(*) as total FROM surat_masuk WHERE tanggal_masuk='$today'"))['total'];
-$jadwalHariIni = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT COUNT(*) as total FROM jadwal WHERE tanggal='$today'"))['total'];
+$data['suratHariIni']  = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT COUNT(*) as total FROM surat_masuk WHERE tanggal_masuk='$today'"))['total'];
+$data['jadwalHariIni'] = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT COUNT(*) as total FROM jadwal WHERE tanggal='$today'"))['total'];
 ?>
 
-<div class="container mt-4">
-
-    <div class="dashboard-header">
-        <img src="assets/img/logo-smg.png" alt="Logo DPPPA Kota Semarang">
-        <h2>DASHBOARD ARSIP</h2>
-        <h5>Dinas Pemberdayaan Perempuan dan Perlindungan Anak<br>Kota Semarang</h5>
-        <p class="mt-2">Selamat datang, <strong><?= htmlspecialchars($namaUser) ?></strong> (<?= ucfirst($roleUser) ?>)</p>
+<div class="container mt-5">
+    <div class="text-center mb-5">
+        <img src="assets/img/logo-smg.png" alt="Logo DPPPA Kota Semarang" class="mb-3" style="height: 80px;">
+        <h2 class="fw-bold">DASHBOARD ARSIP</h2>
+        <h5 class="text-muted">Dinas Pemberdayaan Perempuan dan Perlindungan Anak Kota Semarang</h5>
+        <p class="mt-3">Selamat datang, <strong><?= htmlspecialchars($namaUser) ?></strong> (<?= ucfirst($roleUser) ?>)</p>
     </div>
 
-    <!-- Statistik Utama -->
+    <!-- Baris 1: 3 Card -->
     <div class="row g-4 mb-4">
-        <div class="col-md-3">
+        <div class="col-md-4">
             <a href="surat_masuk/index.php" class="text-decoration-none">
-                <div class="card card-custom bg-danger text-white text-center shadow-sm p-3">
-                    <i class="fas fa-envelope-open card-icon"></i>
-                    <h6>Surat Masuk</h6>
-                    <h3><?= $suratMasuk ?></h3>
+                <div class="card text-white bg-danger text-center shadow-sm p-4 h-100">
+                    <div class="mb-2"><i class="fas fa-envelope-open fa-2x"></i></div>
+                    <h6 class="mb-1">Surat Masuk</h6>
+                    <h3 class="fw-bold"><?= $data['suratMasuk'] ?></h3>
                 </div>
             </a>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
             <a href="surat_keluar/index.php" class="text-decoration-none">
-                <div class="card card-custom bg-success text-white text-center shadow-sm p-3">
-                    <i class="fas fa-paper-plane card-icon"></i>
-                    <h6>Surat Keluar</h6>
-                    <h3><?= $suratKeluar ?></h3>
+                <div class="card text-white bg-success text-center shadow-sm p-4 h-100">
+                    <div class="mb-2"><i class="fas fa-paper-plane fa-2x"></i></div>
+                    <h6 class="mb-1">Surat Keluar</h6>
+                    <h3 class="fw-bold"><?= $data['suratKeluar'] ?></h3>
                 </div>
             </a>
         </div>
-        <div class="col-md-3">
-            <div class="card card-custom bg-warning text-dark text-center shadow-sm p-3">
-                <i class="fas fa-tasks card-icon"></i>
-                <h6>Disposisi</h6>
-                <h3><?= $disposisi ?></h3>
+        <div class="col-md-4">
+            <div class="card bg-warning text-dark text-center shadow-sm p-4 h-100">
+                <div class="mb-2"><i class="fas fa-tasks fa-2x"></i></div>
+                <h6 class="mb-1">Disposisi</h6>
+                <h3 class="fw-bold"><?= $data['disposisi'] ?></h3>
             </div>
         </div>
-        <div class="col-md-3">
+    </div>
+
+    <!-- Baris 2: 2 Card -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-6">
             <a href="manajemen_user/index.php" class="text-decoration-none">
-                <div class="card card-custom bg-secondary text-white text-center shadow-sm p-3">
-                    <i class="fas fa-users card-icon"></i>
-                    <h6>User</h6>
-                    <h3><?= $userCount ?></h3>
+                <div class="card text-white bg-secondary text-center shadow-sm p-4 h-100">
+                    <div class="mb-2"><i class="fas fa-users fa-2x"></i></div>
+                    <h6 class="mb-1">User</h6>
+                    <h3 class="fw-bold"><?= $data['userCount'] ?></h3>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-6">
+            <a href="arsip_digital/index.php" class="text-decoration-none">
+                <div class="card text-white bg-dark text-center shadow-sm p-4 h-100">
+                    <div class="mb-2"><i class="fas fa-archive fa-2x"></i></div>
+                    <h6 class="mb-1">Arsip Digital</h6>
+                    <h3 class="fw-bold"><?= $data['arsipDigital'] ?></h3>
                 </div>
             </a>
         </div>
     </div>
 
-    <!-- Statistik Hari Ini -->
-    <div class="row g-4">
+    <!-- Baris 3: 2 Card -->
+    <div class="row g-4 mb-5">
         <div class="col-md-6">
             <a href="surat_masuk/index.php?tanggal=<?= $today ?>" class="text-decoration-none">
-                <div class="card card-custom bg-primary text-white text-center shadow-sm p-3">
-                    <i class="fas fa-calendar-day card-icon"></i>
-                    <h6>Surat Masuk Hari Ini</h6>
-                    <h3><?= $suratHariIni ?></h3>
+                <div class="card text-white bg-primary text-center shadow-sm p-4 h-100">
+                    <div class="mb-2"><i class="fas fa-calendar-day fa-2x"></i></div>
+                    <h6 class="mb-1">Surat Masuk Hari Ini</h6>
+                    <h3 class="fw-bold"><?= $data['suratHariIni'] ?></h3>
                 </div>
             </a>
         </div>
         <div class="col-md-6">
             <a href="jadwal/index.php?tanggal=<?= $today ?>" class="text-decoration-none">
-                <div class="card card-custom bg-info text-white text-center shadow-sm p-3">
-                    <i class="fas fa-clock card-icon"></i>
-                    <h6>Jadwal Hari Ini</h6>
-                    <h3><?= $jadwalHariIni ?></h3>
+                <div class="card text-white bg-info text-center shadow-sm p-4 h-100">
+                    <div class="mb-2"><i class="fas fa-clock fa-2x"></i></div>
+                    <h6 class="mb-1">Jadwal Hari Ini</h6>
+                    <h3 class="fw-bold"><?= $data['jadwalHariIni'] ?></h3>
                 </div>
             </a>
         </div>
     </div>
-
 </div>
 
 <?php include 'templates/footer.php'; ?>
